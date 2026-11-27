@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Top 10 </title>
+  <style>
+    /* Basic colours used throughout the page */
+    :root {
+      --dark-green: #071a17;
+      --card-green: #102621;
+      --light-text: #f3f3e9;
+      --muted-text: #aab5a9;
+      --accent: #c8f169;
+      --gold: #f2c66d;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--dark-green);
+      color: var(--light-text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: auto; }
+
+    /* The large heading at the top of the page */
+    header {
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #071a17, #163c2d);
+    }
+    .hero { padding: 75px 0; }
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 18px 0;
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      line-height: 0.95;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p { max-width: 560px; color: #c3d0c4; font-size: 1.1rem; }
+    .hero-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .pill { border: 1px solid #8fa392; border-radius: 20px; padding: 9px 15px; text-decoration: none; }
+    .pill.primary { background: var(--accent); color: #102018; font-weight: bold; }
+
+    main { padding: 55px 0 75px; }
+    .intro { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
+    .intro h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 0; }
+    .intro p { color: var(--muted-text); margin: 0; max-width: 460px; }
+    aside {
+      background: #1d3324;
+      border-left: 4px solid var(--accent);
+      padding: 15px 18px;
+      margin-bottom: 30px;
+    }
+    aside strong { color: var(--accent); }
+
+    /* Each player has a number, photo and a short profile */
+    .players { display: grid; gap: 16px; }
+    .player {
+      display: grid;
+      grid-template-columns: 70px 160px minmax(0, 1fr);
+      background: var(--card-green);
+      border: 1px solid #29443b;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .rank { text-align: center; padding-top: 18px; color: var(--accent); font-size: 1.7rem; font-weight: bold; }
+    .portrait { width: 160px; height: 100%; min-height: 220px; object-fit: cover; background: #355747; }
+    .details { padding: 20px 24px; }
+    .name-line { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+    .name-line h3 { font-size: 1.5rem; margin: 0; }
+    .born { color: var(--gold); font-size: 0.9rem; }
+    .full-name { font-size: 0.9rem; color: var(--muted-text); margin: 3px 0 12px; }
+    .clubs { color: #dce4da; margin: 0 0 12px; }
+    .label { color: var(--accent); font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin: 10px 0 2px; }
+    .achievements, .style, .legacy { margin: 0; color: #d7dfd5; }
+    .photo-credit { font-size: 0.75rem; color: #aab5a9; margin-top: 12px; }
+    .photo-credit a { color: #d4e3d5; }
+    footer { border-top: 1px solid #29443b; padding: 22px 0; color: var(--muted-text); font-size: 0.85rem; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+
+    /* Change the cards a little so they fit smaller screens */
+    @media (max-width: 700px) {
+      .wrap { width: min(100% - 28px, 560px); }
+      header { min-height: 420px; }
+      .intro { display: block; }
+      .intro p { margin-top: 9px; }
+      .player { grid-template-columns: 48px 95px minmax(0, 1fr); }
+      .rank { font-size: 1.3rem; padding-top: 15px; }
+      .portrait { width: 95px; min-height: 100%; }
+      .details { padding: 16px 12px; }
+      .name-line h3 { font-size: 1.2rem; }
+      .hero { padding: 60px 0; }
+    }
+    @media (max-width: 440px) {
+      .player { grid-template-columns: 40px 75px minmax(0, 1fr); }
+      .portrait { width: 75px; }
+      .details { padding: 14px 10px; }
+      .full-name, .clubs, .achievements, .style, .legacy { font-size: 0.85rem; }
+    }
+
+    .portrait {
+  transition: transform 0.4s ease;
+}
+
+.player:hover .portrait {
+  transform: scale(1.08);
+}
+
+.player {
+  transition: transform 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.player:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.name-line h3 {
+  transition: color 0.3s ease;
+}
+
+.player:hover .name-line h3 {
+  color: var(--accent);
+}
+  </style>
+
+</head>
+
+<body>
+<header>
+    <div class="wrap hero">
+      <div class="eyebrow">Ansath Ranks</div>
+      <h1>FOOTBALL’S<br><span>FINEST</span></h1>
+      <p>This is my list of ten of the greatest football players of all time. I ranked them from number 10 to number 1 based on their careers, achievements and playing style.</p>
+    </div>
+  </header>
+ 
+ <main class="wrap" id="countdown">
+    <div class="intro">
+     <div>
+       <div class="eyebrow">My ranking</div>
+       <h2>The top ten</h2>
+     </div>
+    <p>Here are my picks, with some facts about each player's career and what made them special.</p>
+    </div>
+   
+ <aside>
+ <strong>Scope note </strong> — This list only includes players from 1990 onwards.
+ </aside>
+
+<section class="players" id="players" aria-label="Top ten football players">
+      
+
+ 
+<article class="player" data-wiki="Luka Modrić">
+
+ <div class="rank">10</div>
+ <img src="Modric.webp" class="portrait" loading="lazy">
+
+
+
+
+ <div class="details">
+    <div class="name-line">
+     <h3>Luka Modrić</h3>
+     <span class="born">Croatia · 9 Sep 1985</span>
+    </div>
+  <p class="full-name">Full name: Luka Modrić</p>
+  <p class="clubs"><b>Clubs:</b> Dinamo Zagreb, Tottenham Hotspur, Real Madrid, AC Milan.</p>
+  <p class="label">Achievements</p><p class="achievements">2018 Ballon d'Or, 2018 FIFA World Cup runner-up, 6 Champions League titles.</p>             
+  <p class="label">Playing style</p><p class="style">Exceptional passing, press resistance, vision, technical control and intelligent  movement.</p>
+  <p class="label">Legacy</p><p class="legacy">One of the finest central midfielders of his generation, proving that intelligence and  technique can dominate against physically stronger opponents.</p>
+
+  <div class="photo-credit"></div>
+
+
+ </div>
+
+ </article>
+
+
+
+
+<article class="player" data-wiki="Thierry Henry">
+
+ <div class="rank">09</div>
+  <img src="Henry.jpg" class="portrait" loading="lazy">
+
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Thierry Henry</h3>
+    <span class="born">France · 17 Aug 1977</span>
+   </div>
+ <p class="full-name">Full name: Thierry Daniel Henry</p>
+ <p class="clubs"><b>Clubs:</b> Monaco, Juventus, Arsenal, Barcelona, New York Red Bulls.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">1998 FIFA World Cup, Euro 2000, 2009 Champions League, 2 Premier League titles, 4 Premier League Golden Boots.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Intelligent movement, explosive pace, elegant finishing, dribbling and creativity.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">Arsenal's greatest modern attacking icon and one of the finest forwards to play in the Premier League.</p>
+ <div class="photo-credit"></div>
+
+ </div>
+
+</article>
+
+
+<article class="player" data-wiki="Xavi">
+
+ <div class="rank">08</div>
+  <img src="Xavi.jpg" class="portrait" loading="lazy">
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Xavi</h3>
+    <span class="born">Spain · 25 Jan 1980</span>
+   </div>
+ <p class="full-name">Full name: Xavier Hernández Creus</p>
+ <p class="clubs"><b>Clubs:</b> Barcelona, Al Sadd.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">2010 FIFA World Cup, Euro 2008 and 2012, 4 Champions League titles.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Short passing, spatial awareness, positioning, press resistance and tempo control.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">One of the greatest midfield conductors ever. A fundamental figure in Barcelona's tiki-taka era and Spain's golden generation.</p>
+
+
+</div>
+
+</article>
+ 
+
+
+<article class="player" data-wiki="Andrés Iniesta">
+
+ <div class="rank">07</div>
+  <img src="Iniesta.webp" class="portrait" loading="lazy">
+
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Andrés Iniesta</h3>
+    <span class="born">Spain · 11 May 1984</span>
+   </div>
+ <p class="full-name">Full name: Andrés Iniesta Luján</p>
+ <p class="clubs"><b>Clubs:</b> Barcelona, Vissel Kobe, Emirates Club.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">2010 FIFA World Cup, Euro 2008 and 2012, 4 Champions League titles.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Exceptional close control, dribbling, ball retention, spatial awareness and ability to escape pressure.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">One of the greatest technical midfielders ever. Scored Spain's winning goal in the 2010 World Cup final.</p>
+
+ </div>
+
+</article>
+ 
+
+
+<article class="player" data-wiki="Ronaldinho">
+
+ <div class="rank">06</div>
+  <img src="Ronaldinho.jpg" class="portrait" loading="lazy">
+
+ 
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Ronaldinho</h3>
+    <span class="born">Brazil · 21 Mar 1980</span>
+   </div>
+ <p class="full-name">Full name: Ronaldo de Assis Moreira</p>
+ <p class="clubs"><b>Clubs:</b> Paris Saint-Germain, Barcelona, AC Milan, Flamengo, Atlético Mineiro and others.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">2005 Ballon d'Or, 2002 FIFA World Cup, 2006 Champions League, 2005 FIFA World Player of the Year.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Extraordinary creativity, tricks, no-look passes, dribbling, free kicks and technical improvisation.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">One of the most entertaining and technically gifted players ever. His Barcelona peak remains unforgettable.</p>
+
+ </div>
+
+</article>
+
+
+
+
+<article class="player" data-wiki="Paolo Maldini">
+
+ <div class="rank">05</div>
+ <img src="Maldini.webp" class="portrait" loading="lazy">
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Paolo Maldini</h3>
+    <span class="born">Italy · 26 Jun 1968</span>
+   </div>
+ <p class="full-name">Full name: Paolo Cesare Maldini</p>
+ <p class="clubs"><b>Clubs:</b> AC Milan.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">5 European Cup/Champions League titles, 7 Serie A titles, 2003 UEFA Club Defender of the Year.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Outstanding defensive positioning, anticipation, tackling, composure and tactical intelligence.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">One of the greatest defenders in football history. His ability to defend without relying on reckless challenges or unnecessary aggression is remarkable.</p>
+ 
+
+ </div>
+
+</article>
+
+
+<article class="player" data-wiki="Ronaldo (Brazilian footballer)">
+
+ <div class="rank">04</div>
+  <img src="R9.jpg" class="portrait" loading="lazy">
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Ronaldo Nazário</h3>
+    <span class="born">Brazil · 18 Sep 1976</span>
+   </div>
+ <p class="full-name">Full name: Ronaldo Luís Nazário de Lima</p>
+ <p class="clubs"><b>Clubs:</b> Cruzeiro, PSV, Barcelona, Inter Milan, Real Madrid, AC Milan, Corinthians.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">2 Ballon d'Or awards, 2 FIFA World Cups, 2002 World Cup Golden Boot, 1997 and 2002 FIFA World Player of the Year.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Explosive pace, close control, acceleration, dribbling and clinical finishing.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">One of the greatest natural strikers ever. His peak ability was extraordinary, even considering the serious injuries that interrupted his career.</p>
+
+ </div>
+
+</article>
+ 
+
+
+<article class="player" data-wiki="Zinedine Zidane">
+
+ <div class="rank">03</div>
+   <img src="Zidane.avif" class="portrait" loading="lazy">
+
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Zinedine Zidane</h3>
+    <span class="born">France · 23 Jun 1972</span>
+   </div>
+ <p class="full-name"> Full name: Zinedine Yazid Zidane</p>
+ <p class="clubs"><b>Clubs:</b> Cannes, Bordeaux, Juventus, Real Madrid.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">1998 Ballon d'Or, 1998 FIFA World Cup, Euro 2000, 2002 Champions League.</p>
+ <p class="label">Playing style</p>
+ <p class="style"> Exceptional first touch, ball control, vision, balance, passing and ability to dictate tempo.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">A midfielder whose technical elegance and composure made him one of football's greatest big-game performers.</p>
+
+ 
+</div>
+
+</article>
+
+
+<article class="player" data-wiki="Cristiano Ronaldo">
+
+ <div class="rank">02</div>
+  <img src="CR7.jpg" class="portrait" loading="lazy">
+
+ 
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Cristiano Ronaldo</h3>
+    <span class="born">Portugal · 5 Feb 1985</span>
+   </div>
+ <p class="full-name">Full name: Cristiano Ronaldo dos Santos Aveiro</p>
+ <p class="clubs"><b>Clubs:</b> Sporting CP, Manchester United, Real Madrid, Juventus, Al Nassr.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">5 Ballon d'Or awards, 5 Champions League titles, Euro 2016, 2019 UEFA Nations League.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Explosive acceleration, aerial dominance, powerful shooting, intelligent movement and elite finishing.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">One of the greatest goalscorers ever, renowned for adapting his game and maintaining an extraordinary level over two decades.</p>
+
+ </div>
+
+</article>
+
+
+<article class="player" data-wiki="Lionel Messi">
+
+ <div class="rank">01</div>
+  <img src="LM10.jpg" class="portrait" loading="lazy">
+
+
+ <div class="details">
+   <div class="name-line">
+    <h3>Lionel Messi</h3>
+    <span class="born">Argentina · 24 Jun 1987</span>
+   </div>
+ <p class="full-name">Full name: Lionel Andrés Messi</p>
+ <p class="clubs"><b>Clubs:</b> Barcelona, Paris Saint-Germain, Inter Miami.</p>
+ <p class="label">Achievements</p>
+ <p class="achievements">8 Ballon d'Or awards, 2022 FIFA World Cup, 2 Copa América titles, 4 UEFA Champions League titles.</p>
+ <p class="label">Playing style</p>
+ <p class="style">Exceptional left-footed dribbler, playmaker and goalscorer. Famous for close control, vision, passing and intelligent movement.</p>
+ <p class="label">Legacy</p>
+ <p class="legacy">The most complete attacking footballer of the modern era. His ability to create and finish chances makes him extraordinarily difficult to compare with anyone else.</p>
+
+
+ </div>
+
+</article>
+
+
+</section>
+ </main>
+  
+<footer>
+ <div class="wrap">
+  <span>My Top 1o</span>
+  <span>These rankings based on my personal opinion</span>
+ </div>
+</footer>
+
+ 
+
+
+
+
+</body>
+</html>
